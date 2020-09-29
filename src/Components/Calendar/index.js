@@ -14,6 +14,7 @@ class Calendar extends Component {
         super();
             this.width = props.width || "350px";
             this.style = props.style || {};
+            this.style.width = this.width;
     }
 
     weekdays = moment.weekdays();
@@ -49,7 +50,7 @@ class Calendar extends Component {
         });
         let blanks = [];
         for(let i = 0; i < this.firstDayOfMonth(); i++){
-            blanks.push(<td className="emptySlot">{""}</td>)
+            blanks.push(<td key={i*80} className="emptySlot">{""}</td>)
         }
         console.log("blanks: ", blanks);
         let daysInMonth = [];
@@ -85,7 +86,7 @@ class Calendar extends Component {
             )
         });
         return(
-            <div className="calendar-container">
+            <div className="calendar-container" style={this.style}>
                 <table className="calendar">
                     <thead>
                         <tr className="calendar-header"></tr>
