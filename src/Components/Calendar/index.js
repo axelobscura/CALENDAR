@@ -136,6 +136,29 @@ class Calendar extends Component {
         );
     }
 
+    nextMonth = () => {
+        let dateContext = Object.assign({}, this.state.dateContext);
+        dateContext = moment(dateContext).add(1, "month");
+        this.setState({
+            dateContext: dateContext
+        });
+        this.props.onNextMonth && this.props.onNextMonth();
+    }
+
+    prevMonth = () => {
+        let dateContext = Object.assign({}, this.state.dateContext);
+        //dateContext = moment(dateContext).substract(1, "month");
+        dateContext = moment(dateContext).subtract(1, "month");
+        this.setState({
+            dateContext: dateContext
+        });
+        this.props.onPrevMonth && this.props.onPrevMonth();
+    }
+
+    onDayClick = (e, day) => {
+        this.props.onDayClick && this.props.onDayClick(e, day);
+    }
+
     render(){
         let weekDays = this.weekdaysShort.map((day) => {
             return(
@@ -152,7 +175,7 @@ class Calendar extends Component {
             let className = (d == this.currentDate() ? "day current-day": "day");
             daysInMonth.push(
                 <td key={d} className={className}>
-                    <span>{d}</span>
+                    <span onClick={(e) => {this.onDayClick(e, d)}}>{d}</span>
                 </td>
             );
         }
@@ -190,8 +213,8 @@ class Calendar extends Component {
                                 <this.YearNav />
                             </td>
                             <td colSpan="2" className="nav-month">
-                                <span class="lnr lnr-chevron-left"  onClick={(e) => {this.nextMonth()}}></span>
-                                <span class="lnr lnr-chevron-right"  onClick={(e) => {this.prevMonth()}}></span>
+                                <span class="lnr lnr-chevron-left"  onClick={(e) => {this.nextMonth(e)}}></span>
+                                <span class="lnr lnr-chevron-right"  onClick={(e) => {this.prevMonth(e)}}></span>
                             </td>
                         </tr>
                     </thead>
