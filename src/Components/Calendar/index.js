@@ -41,12 +41,22 @@ class Calendar extends Component {
         let firstDay = moment(dateContext).startOf('month').format('d');
         return firstDay;
     }
-
+    setMonth = (month) => {
+        let monthNo = this.months.indexOf(month);
+        let dataContext = Object.assign({}, this.state.dateContext);
+        dataContext = moment(dataContext).set("month", monthNo);
+        this.setState({
+            dateContext: dataContext
+        });
+    }
+    onSelectChange = (e, data) => {
+        this.setMonth(data);
+    }
     SelectList = (props) => {
         let popup = props.data.map((data) => {
             return(
                 <div key={data}>
-                    <a href="#">
+                    <a href="#" onClick={(e) => {this.onSelectChange(e, data)}}>
                         {data}
                     </a>
                 </div>
