@@ -62,7 +62,28 @@ class Calendar extends Component {
             );
         }
         console.log("days: ", daysInMonth);
-        let trElems = [];
+        let totalSlots = [...blanks, ...daysInMonth];
+        let rows = [];
+        let cells = [];
+        totalSlots.forEach((row, i) => {
+            if((i % 7) !== 0){
+                cells.push(row);
+            }else{
+                let insertRow = cells.slice();
+                rows.push(insertRow);
+                cells = [];
+                cells.push(row);
+            }
+            if(i === totalSlots.length -1){
+                let insertRow = cells.slice();
+                rows.push(insertRow);
+            }
+        })
+        let trElems = rows.map((d, i) => {
+            return(
+                <tr key={i*100}>{d}</tr>
+            )
+        });
         return(
             <div className="calendar-container">
                 <table className="calendar">
