@@ -7,7 +7,8 @@ class Calendar extends Component {
         dateContext: moment(),
         today: moment(),
         showMonthPopup: false,
-        showYearPopup: false
+        showYearPopup: false,
+        showYearNav: false
     }
 
     constructor(props){
@@ -51,6 +52,7 @@ class Calendar extends Component {
     }
     onSelectChange = (e, data) => {
         this.setMonth(data);
+        this.props.onChangeMonth && this.props.onChangeMonth();
     }
     SelectList = (props) => {
         let popup = props.data.map((data) => {
@@ -87,6 +89,51 @@ class Calendar extends Component {
                 }
             </span>
         )
+    }
+
+    showYearEditor = () => {
+        this.setState({
+            showYearNav: true
+        })
+    }
+
+    setYear = (year) => {
+        let dateContext = Object.assign({}, this.state.dateContext);
+        dateContext = moment(dateContext).set("year", year);
+        this.setState({
+            dateContext: dateContext
+        })
+    }
+
+    onYearChange = (e) => {
+        this.setYear(e.target.value);
+        this.props.onYearChange && this.props.onYearChange(e, e.target.value);
+    }
+
+    onKeyUpYear = (e) => {
+        if(e.which === 13 || e.which === 27){
+            this.setYear(e.target.value);
+            this.setState({
+                showYearNav: false
+            })
+        }
+    }
+
+    YearNav = () => {
+        return(
+            this.state.showYearNav ?
+                <input defaultValue={this.year()}
+                className="editor-year"
+                ref={(yearInput) => { this.yearInput = yearInput }}
+                onKeyUp={(e) => this.onKeyUpYear(e)}
+                onChange={(e) => this.onYearChange(e)}
+                type="number"
+                placeholder="year" />
+            :
+                <span className="label-year" onDoubleClick={(e) => {this.showYearEditor()}}>
+                    {this.year()}
+                </span>
+        );
     }
 
     render(){
@@ -139,6 +186,12 @@ class Calendar extends Component {
                         <tr className="calendar-header">
                             <td colSpan="5">
                                 <this.MonthNav />
+                                {" "}
+                                <this.YearNav />
+                            </td>
+                            <td colSpan="2" className="nav-month">
+                                <span class="lnr lnr-chevron-left"  onClick={(e) => {this.nextMonth()}}></span>
+                                <span class="lnr lnr-chevron-right"  onClick={(e) => {this.prevMonth()}}></span>
                             </td>
                         </tr>
                     </thead>
