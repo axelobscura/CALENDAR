@@ -42,6 +42,34 @@ class Calendar extends Component {
         return firstDay;
     }
 
+    SelectList = (props) => {
+        let popup = props.data.map((data) => {
+            return(
+                <div key={data}>
+                    <a href="#">
+                        {data}
+                    </a>
+                </div>
+            );
+        });
+        return (
+            <div className="month-popup">
+                {popup}
+            </div>
+        );
+    }
+
+    MonthNav = () => {
+        return(
+            <span className="label-month">
+                {this.month()}
+                {this.state.showMonthPopup &&
+                    <this.SelectList data={this.months} />
+                }
+            </span>
+        )
+    }
+
     render(){
         let weekDays = this.weekdaysShort.map((day) => {
             return(
@@ -89,7 +117,11 @@ class Calendar extends Component {
             <div className="calendar-container" style={this.style}>
                 <table className="calendar">
                     <thead>
-                        <tr className="calendar-header"></tr>
+                        <tr className="calendar-header">
+                            <td colSpan="5">
+                                <this.MonthNav />
+                            </td>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr>
