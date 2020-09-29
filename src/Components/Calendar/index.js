@@ -19,7 +19,7 @@ class Calendar extends Component {
 
     weekdays = moment.weekdays();
     weekdaysShort = moment.weekdaysShort();
-    month = moment.months();
+    months = moment.months();
 
     year = () => {
         return this.state.dateContext.format("Y");
@@ -52,6 +52,7 @@ class Calendar extends Component {
                 </div>
             );
         });
+        
         return (
             <div className="month-popup">
                 {popup}
@@ -59,9 +60,17 @@ class Calendar extends Component {
         );
     }
 
+    onChangeMonth = (e, month) => {
+        this.setState({
+            showMonthPopup: !this.state.showMonthPopup
+        })
+    }
+
     MonthNav = () => {
         return(
-            <span className="label-month">
+            <span className="label-month"
+                onClick={(e) => {this.onChangeMonth(e, this.month())}}
+            >
                 {this.month()}
                 {this.state.showMonthPopup &&
                     <this.SelectList data={this.months} />
